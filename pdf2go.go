@@ -3,11 +3,16 @@ package pdf2go
 import (
 	"context"
 
-	"github.com/rudolfoborges/pdf2go/internal/model"
+	"github.com/rudolfoborges/pdf2go/internal/core"
+	"github.com/rudolfoborges/pdf2go/pkg/model"
 )
 
-type Options struct{}
+func New(ctx context.Context, options *model.Options) (model.PDFReader, error) {
+	pdfReader, err := core.New(ctx)
 
-func New(ctx context.Context, options *Options) (*model.PDFReader, error) {
-	return nil, nil
+	if err != nil {
+		return nil, err
+	}
+
+	return pdfReader, nil
 }
