@@ -1,5 +1,7 @@
 package core
 
-func New() Extractor {
-	return nil
+import "github.com/rudolfoborges/pdf2go/internal/model"
+
+func New() (*model.PDFReader, error) {
+	return nil, nil
 }
