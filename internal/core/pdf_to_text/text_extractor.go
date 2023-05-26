@@ -1,4 +1,4 @@
-package totext
+package text
 
 type TextExtractor struct {
 }

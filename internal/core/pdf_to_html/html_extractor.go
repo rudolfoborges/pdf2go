@@ -1,4 +1,4 @@
-package tohtml
+package html
 
 type HtmlExtractor struct {
 }

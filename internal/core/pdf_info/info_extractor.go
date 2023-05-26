@@ -1,10 +1,14 @@
-package pdfinfo
+package info
 
 import (
 	"errors"
 	"os/exec"
 	"regexp"
 	"strconv"
+)
+
+var (
+	ErrPageNotFound = errors.New("Page not found")
 )
 
 type PDFInfoExtractor struct {
@@ -42,5 +46,5 @@ func (e *PDFInfoExtractor) Extract(path string) (*PDFInfo, error) {
 		}, nil
 	}
 
-	return nil, errors.New("Page number not found")
+	return nil, ErrPageNotFound
 }
