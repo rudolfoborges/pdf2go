@@ -12,7 +12,9 @@ var (
 )
 
 type PDFInfo struct {
+	Author      string
 	PagesNumber int
+	Encrypted   bool
 }
 
 // Extract extracts the number of pages from the PDF file.
@@ -27,20 +29,29 @@ func Extract(path string) (*PDFInfo, error) {
 	}
 
 	text := string(output)
-	regex := regexp.MustCompile(`Pages:\s+(\d+)`)
+	pageNumber, err := findInfo(regexp.MustCompile(`Pages:\s+(\d+)`), text)
+
+	if err != nil {
+		return nil, err
+	}
+	pagesNumber, _ := strconv.Atoi(pageNumber)
+
+	author, _ := findInfo(regexp.MustCompile(`Author:\s+(\w+)`), text)
+	encrypted, _ := findInfo(regexp.MustCompile(`Encrypted:\s+(\w+)`), text)
+
+	return &PDFInfo{
+		Author:      author,
+		PagesNumber: pagesNumber,
+		Encrypted:   encrypted == "yes",
+	}, nil
+}
+
+func findInfo(regex *regexp.Regexp, text string) (string, error) {
 	match := regex.FindStringSubmatch(text)
 
 	if len(match) > 1 {
-		pagesNumber, err := strconv.Atoi(match[1])
-
-		if err != nil {
-			return nil, err
-		}
-
-		return &PDFInfo{
-			PagesNumber: pagesNumber,
-		}, nil
+		return match[1], nil
 	}
 
-	return nil, ErrGetPDFInfo
+	return "", ErrGetPDFInfo
 }

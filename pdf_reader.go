@@ -10,6 +10,7 @@ import (
 
 type PDFReader struct {
 	pages []*Page
+	info  *info.PDFInfo
 }
 
 var (
@@ -42,6 +43,7 @@ func NewPDFReader(path string) (*PDFReader, error) {
 	}
 
 	return &PDFReader{
+		info:  pdfInfo,
 		pages: pages,
 	}, nil
 }
@@ -57,4 +59,15 @@ func (r *PDFReader) PagesNumber() int {
 // text and html extractors.
 func (r *PDFReader) Pages() ([]*Page, error) {
 	return r.pages, nil
+}
+
+// Author returns the author of the PDF file or an empty string
+// if the author is not defined.
+func (r *PDFReader) Author() string {
+	return r.info.Author
+}
+
+// Encrypted returns true if the PDF file is encrypted.
+func (r *PDFReader) Encrypted() bool {
+	return r.info.Encrypted
 }

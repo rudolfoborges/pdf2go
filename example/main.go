@@ -8,22 +8,15 @@ import (
 )
 
 func main() {
-	reader, err := pdf2go.New("teste.pdf", &pdf2go.Options{})
+	pdf, err := pdf2go.New("example/doc.pdf", &pdf2go.Options{})
 
 	if err != nil {
 		log.Printf("Err: %v", err)
 		panic(err)
 	}
 
-	pages, err := reader.Pages()
-
-	if err != nil {
-		panic(err)
-	}
-
-	fmt.Println("Number of pages:", reader.PagesNumber())
-
-	for _, page := range pages {
-		fmt.Println(page.Html())
-	}
+	fmt.Printf(
+		"PDF Info Author (%s) Encrypted (%v) PagesNumber (%d) \n",
+		pdf.Author(), pdf.Encrypted(), pdf.PagesNumber(),
+	)
 }
