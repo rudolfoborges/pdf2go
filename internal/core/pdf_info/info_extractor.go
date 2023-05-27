@@ -15,6 +15,9 @@ type PDFInfo struct {
 	PagesNumber int
 }
 
+// Extract extracts the number of pages from the PDF file.
+// It returns an error if the number of pages cannot be extracted.
+// The path argument is the path to the PDF file.
 func Extract(path string) (*PDFInfo, error) {
 	cmd := exec.Command("pdfinfo", path)
 	output, err := cmd.Output()
