@@ -24,6 +24,6 @@ func main() {
 	fmt.Println("Number of pages:", reader.PagesNumber())
 
 	for _, page := range pages {
-		fmt.Println(page.Text())
+		fmt.Println(page.Html())
 	}
 }

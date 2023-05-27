@@ -8,6 +8,7 @@ type Page struct {
 	HtmlExtractor core.Extractor
 }
 
+// NewPage creates a new Page.
 func NewPage(number int, textExtractor, htmlExtractor core.Extractor) *Page {
 	return &Page{
 		Number:        number,
@@ -16,10 +17,14 @@ func NewPage(number int, textExtractor, htmlExtractor core.Extractor) *Page {
 	}
 }
 
+// Text returns the text from the PDF file.
+// It returns an error if the text cannot be extracted.
 func (p *Page) Text() (string, error) {
 	return p.TextExtractor.Extract(p.Number)
 }
 
+// Html returns the html from the PDF file.
+// It returns an error if the html cannot be extracted.
 func (p *Page) Html() (string, error) {
 	return p.HtmlExtractor.Extract(p.Number)
 }
