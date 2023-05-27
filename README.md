@@ -1,6 +1,6 @@
 # pdf2go
 
-A golang library for converting PDF to text and html.
+A simple Golang library for converting PDF to text and html.
 
 ## Installation
 
