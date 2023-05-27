@@ -9,7 +9,9 @@ import (
 	text "github.com/rudolfoborges/pdf2go/internal/core/pdf_to_text"
 )
 
+// PDFReader represents a PDF file.
 type PDFReader struct {
+	logger        Logger
 	pages         []*Page
 	info          *info.PDFInfo
 	textExtractor core.Extractor
@@ -24,7 +26,7 @@ var (
 // NewPDFReader creates a new PDFReader.
 // It returns an error if the PDFReader cannot be created.
 // The path argument is the path to the PDF file.
-func NewPDFReader(path string) (*PDFReader, error) {
+func NewPDFReader(path string, logger Logger) (*PDFReader, error) {
 	if !core.ValidatePDFPath(path) {
 		return nil, ErrInvalidPath
 	}
@@ -39,6 +41,8 @@ func NewPDFReader(path string) (*PDFReader, error) {
 		return nil, ErrInvalidPagesNumber
 	}
 
+	logger.Debugf("The PDF has %d pages", pdfInfo.PagesNumber)
+
 	pages := make([]*Page, pdfInfo.PagesNumber)
 
 	textExtractor := text.NewTextExtractor(path, pdfInfo.PagesNumber)
@@ -46,7 +50,7 @@ func NewPDFReader(path string) (*PDFReader, error) {
 
 	for i := 0; i < pdfInfo.PagesNumber; i++ {
 		pageNumber := i + 1
-		pages[i] = NewPage(pageNumber, textExtractor, htmlExtractor)
+		pages[i] = NewPage(pageNumber, textExtractor, htmlExtractor, logger)
 	}
 
 	return &PDFReader{
@@ -60,12 +64,14 @@ func NewPDFReader(path string) (*PDFReader, error) {
 // Text returns the text of all pages from the PDF file.
 // It returns an error if the text cannot be extracted.
 func (r *PDFReader) Text() (string, error) {
+	r.logger.Debugf("Extracting text from PDF file")
 	return r.textExtractor.Extract()
 }
 
 // Html returns the html of all pages from the PDF file.
 // It returns an error if the html cannot be extracted.
 func (r *PDFReader) Html() (string, error) {
+	r.logger.Debugf("Extracting html from PDF file")
 	return r.textExtractor.Extract()
 }
 

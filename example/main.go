@@ -8,7 +8,9 @@ import (
 )
 
 func main() {
-	pdf, err := pdf2go.New("example/doc.pdf", &pdf2go.Options{})
+	pdf, err := pdf2go.New("example/doc.pdf", pdf2go.Config{
+		LogLevel: pdf2go.LogLevelDegub,
+	})
 
 	if err != nil {
 		log.Printf("Err: %v", err)

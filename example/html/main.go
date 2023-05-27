@@ -8,7 +8,7 @@ import (
 )
 
 func main() {
-	reader, err := pdf2go.New("example/doc.pdf", &pdf2go.Options{})
+	reader, err := pdf2go.New("example/doc.pdf", pdf2go.Config{})
 
 	if err != nil {
 		log.Printf("Err: %v", err)
