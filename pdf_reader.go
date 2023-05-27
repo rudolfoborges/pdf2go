@@ -10,13 +10,15 @@ import (
 )
 
 type PDFReader struct {
-	pages []*Page
-	info  *info.PDFInfo
+	pages         []*Page
+	info          *info.PDFInfo
+	textExtractor core.Extractor
+	htmlExtractor core.Extractor
 }
 
 var (
-	ErrInvalidPath        = errors.New("Invalid path")
-	ErrInvalidPagesNumber = errors.New("Invalid pages number")
+	ErrInvalidPath        = errors.New("Invalid pdf path")
+	ErrInvalidPagesNumber = errors.New("Invalid pages number. It must be greater than 0")
 )
 
 // NewPDFReader creates a new PDFReader.
@@ -39,8 +41,8 @@ func NewPDFReader(path string) (*PDFReader, error) {
 
 	pages := make([]*Page, pdfInfo.PagesNumber)
 
-	textExtractor := text.NewTextExtractor(path)
-	htmlExtractor := html.NewHtmlExtractor(path)
+	textExtractor := text.NewTextExtractor(path, pdfInfo.PagesNumber)
+	htmlExtractor := html.NewHtmlExtractor(path, pdfInfo.PagesNumber)
 
 	for i := 0; i < pdfInfo.PagesNumber; i++ {
 		pageNumber := i + 1
@@ -48,9 +50,23 @@ func NewPDFReader(path string) (*PDFReader, error) {
 	}
 
 	return &PDFReader{
-		info:  pdfInfo,
-		pages: pages,
+		info:          pdfInfo,
+		pages:         pages,
+		textExtractor: textExtractor,
+		htmlExtractor: htmlExtractor,
 	}, nil
+}
+
+// Text returns the text of all pages from the PDF file.
+// It returns an error if the text cannot be extracted.
+func (r *PDFReader) Text() (string, error) {
+	return r.textExtractor.Extract()
+}
+
+// Html returns the html of all pages from the PDF file.
+// It returns an error if the html cannot be extracted.
+func (r *PDFReader) Html() (string, error) {
+	return r.textExtractor.Extract()
 }
 
 // PagesNumber returns the number of pages in the PDF file

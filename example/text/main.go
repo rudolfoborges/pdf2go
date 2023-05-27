@@ -15,6 +15,9 @@ func main() {
 		panic(err)
 	}
 
+	text, err := reader.Text()
+	fmt.Printf("TEXT: %s", text)
+
 	pages, err := reader.Pages()
 
 	if err != nil {

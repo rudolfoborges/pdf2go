@@ -1,5 +1,6 @@
 package core
 
 type Extractor interface {
-	Extract(pageNumber int) (string, error)
+	Extract() (string, error)
+	ExtractPage(pageNumber int) (string, error)
 }
