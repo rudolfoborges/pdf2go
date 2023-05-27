@@ -1,12 +1,11 @@
 package pdf2go
 
-import (
-	"github.com/rudolfoborges/pdf2go/internal/core"
-)
+type Options struct {
+}
 
-type Options struct{}
-
-func New(options Options) (*core.PDFReader, error) {
-	pdfReader := core.NewPDFReader()
-	return pdfReader, nil
+// New creates a new PDFReader.
+// It returns an error if the PDFReader cannot be created.
+// The path argument is the path to the PDF file.
+func New(path string, options *Options) (*PDFReader, error) {
+	return NewPDFReader(path)
 }

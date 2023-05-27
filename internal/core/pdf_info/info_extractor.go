@@ -8,21 +8,14 @@ import (
 )
 
 var (
-	ErrPageNotFound = errors.New("Page not found")
+	ErrGetPDFInfo = errors.New("failed to get pdf info")
 )
-
-type PDFInfoExtractor struct {
-}
 
 type PDFInfo struct {
 	PagesNumber int
 }
 
-func NewInfoExtractor() *PDFInfoExtractor {
-	return &PDFInfoExtractor{}
-}
-
-func (e *PDFInfoExtractor) Extract(path string) (*PDFInfo, error) {
+func Extract(path string) (*PDFInfo, error) {
 	cmd := exec.Command("pdfinfo", path)
 	output, err := cmd.Output()
 
@@ -46,5 +39,5 @@ func (e *PDFInfoExtractor) Extract(path string) (*PDFInfo, error) {
 		}, nil
 	}
 
-	return nil, ErrPageNotFound
+	return nil, ErrGetPDFInfo
 }
