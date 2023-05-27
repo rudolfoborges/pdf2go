@@ -3,6 +3,7 @@ package pdf2go
 import (
 	"errors"
 
+	"github.com/rudolfoborges/pdf2go/internal/core"
 	info "github.com/rudolfoborges/pdf2go/internal/core/pdf_info"
 	html "github.com/rudolfoborges/pdf2go/internal/core/pdf_to_html"
 	text "github.com/rudolfoborges/pdf2go/internal/core/pdf_to_text"
@@ -22,6 +23,10 @@ var (
 // It returns an error if the PDFReader cannot be created.
 // The path argument is the path to the PDF file.
 func NewPDFReader(path string) (*PDFReader, error) {
+	if !core.ValidatePDFPath(path) {
+		return nil, ErrInvalidPath
+	}
+
 	pdfInfo, err := info.Extract(path)
 
 	if err != nil {
@@ -59,6 +64,12 @@ func (r *PDFReader) PagesNumber() int {
 // text and html extractors.
 func (r *PDFReader) Pages() ([]*Page, error) {
 	return r.pages, nil
+}
+
+// Title returns the title of the PDF file or an empty string
+// if the title is not defined.
+func (r *PDFReader) Title() string {
+	return r.info.Title
 }
 
 // Author returns the author of the PDF file or an empty string

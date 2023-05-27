@@ -12,6 +12,7 @@ var (
 )
 
 type PDFInfo struct {
+	Title        string
 	Author       string
 	PagesNumber  int
 	Encrypted    bool
@@ -37,11 +38,13 @@ func Extract(path string) (*PDFInfo, error) {
 	}
 	pagesNumber, _ := strconv.Atoi(pageNumber)
 
+	title, _ := findInfo(regexp.MustCompile(`Title:\s+(\w+)`), text)
 	author, _ := findInfo(regexp.MustCompile(`Author:\s+(\w+)`), text)
 	encrypted, _ := findInfo(regexp.MustCompile(`Encrypted:\s+(\w+)`), text)
 	creationDate, _ := findInfo(regexp.MustCompile(`CreationDate:\s+(\w+)`), text)
 
 	return &PDFInfo{
+		Title:        title,
 		Author:       author,
 		PagesNumber:  pagesNumber,
 		Encrypted:    encrypted == "yes",
