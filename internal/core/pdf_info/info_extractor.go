@@ -12,9 +12,10 @@ var (
 )
 
 type PDFInfo struct {
-	Author      string
-	PagesNumber int
-	Encrypted   bool
+	Author       string
+	PagesNumber  int
+	Encrypted    bool
+	CreationDate string
 }
 
 // Extract extracts the number of pages from the PDF file.
@@ -38,11 +39,13 @@ func Extract(path string) (*PDFInfo, error) {
 
 	author, _ := findInfo(regexp.MustCompile(`Author:\s+(\w+)`), text)
 	encrypted, _ := findInfo(regexp.MustCompile(`Encrypted:\s+(\w+)`), text)
+	creationDate, _ := findInfo(regexp.MustCompile(`CreationDate:\s+(\w+)`), text)
 
 	return &PDFInfo{
-		Author:      author,
-		PagesNumber: pagesNumber,
-		Encrypted:   encrypted == "yes",
+		Author:       author,
+		PagesNumber:  pagesNumber,
+		Encrypted:    encrypted == "yes",
+		CreationDate: creationDate,
 	}, nil
 }
 

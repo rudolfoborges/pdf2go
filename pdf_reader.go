@@ -71,3 +71,9 @@ func (r *PDFReader) Author() string {
 func (r *PDFReader) Encrypted() bool {
 	return r.info.Encrypted
 }
+
+// CreationDate returns the creation date of the PDF file or an empty string
+// if the creation date is not defined.
+func (r *PDFReader) CreationDate() string {
+	return r.info.CreationDate
+}
