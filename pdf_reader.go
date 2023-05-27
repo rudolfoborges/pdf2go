@@ -54,6 +54,7 @@ func NewPDFReader(path string, logger Logger) (*PDFReader, error) {
 	}
 
 	return &PDFReader{
+		logger:        logger,
 		info:          pdfInfo,
 		pages:         pages,
 		textExtractor: textExtractor,
