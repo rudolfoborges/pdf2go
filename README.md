@@ -27,7 +27,7 @@ brew install poppler
 ### Ubuntu
 
 ```bash
-sudo apt-get install libpoppler-cpp-dev
+sudo apt-get install poppler-utils
 ```
 
 ### Centos
