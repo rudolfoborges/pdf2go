@@ -113,3 +113,8 @@ func main() {
 ```
 
 ### More examples on [examples](https://github.com/rudolfoborges/pdf2go/tree/main/examples) folder
+
+## Next Steps
+
+-   [ ] Add image extraction
+-   [ ] Extract image from specific page
