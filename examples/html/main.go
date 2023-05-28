@@ -16,6 +16,12 @@ func main() {
 	}
 
 	html, err := reader.Html()
+
+	if err != nil {
+		log.Printf("Err: %v", err)
+		panic(err)
+	}
+
 	fmt.Printf("HTML: %s", html)
 
 	pages, err := reader.Pages()
