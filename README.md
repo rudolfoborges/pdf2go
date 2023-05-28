@@ -1,6 +1,7 @@
 # pdf2go
 
-A simple Golang library for converting PDF to text and html.
+Go wrapper for a Poppler PDF rendering library.
+A simple Golang module for converting PDF to text and html.
 
 [![Go Report Card](https://goreportcard.com/badge/github.com/rudolfoborges/pdf2go)](https://goreportcard.com/report/github.com/rudolfoborges/pdf2go)
 [![GoDoc](https://godoc.org/github.com/rudolfoborges/pdf2go?status.svg)](https://godoc.org/github.com/rudolfoborges/pdf2go)
