@@ -24,4 +24,22 @@ func TestValidator(t *testing.T) {
 			t.Errorf("Expected false, got %v", isValid)
 		}
 	})
+
+	t.Run("should reject path with null byte", func(t *testing.T) {
+		path := "test\x00.pdf"
+		isValid := core.ValidatePDFPath(path)
+
+		if isValid != false {
+			t.Errorf("Expected false for null byte path, got %v", isValid)
+		}
+	})
+
+	t.Run("should normalize path before validation", func(t *testing.T) {
+		path := "./path/../other/file.pdf"
+		isValid := core.ValidatePDFPath(path)
+
+		if isValid != true {
+			t.Errorf("Expected true for normalized path, got %v", isValid)
+		}
+	})
 }

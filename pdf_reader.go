@@ -2,6 +2,8 @@ package pdf2go
 
 import (
 	"errors"
+	"os"
+	"path/filepath"
 
 	"github.com/rudolfoborges/pdf2go/internal/core"
 	info "github.com/rudolfoborges/pdf2go/internal/core/pdf_info"
@@ -27,11 +29,19 @@ var (
 // It returns an error if the PDFReader cannot be created.
 // The path argument is the path to the PDF file.
 func NewPDFReader(path string, logger Logger) (*PDFReader, error) {
-	if !core.ValidatePDFPath(path) {
+	// Sanitize the path before any further use to prevent path confusion.
+	cleanPath := filepath.Clean(path)
+
+	if !core.ValidatePDFPath(cleanPath) {
 		return nil, ErrInvalidPath
 	}
 
-	pdfInfo, err := info.Extract(path)
+	// Verify the file exists and is accessible before passing to external commands.
+	if _, err := os.Stat(cleanPath); err != nil {
+		return nil, ErrInvalidPath
+	}
+
+	pdfInfo, err := info.Extract(cleanPath)
 
 	if err != nil {
 		return nil, err
@@ -45,8 +55,8 @@ func NewPDFReader(path string, logger Logger) (*PDFReader, error) {
 
 	pages := make([]*Page, pdfInfo.PagesNumber)
 
-	textExtractor := text.NewTextExtractor(path, pdfInfo.PagesNumber)
-	htmlExtractor := html.NewHtmlExtractor(path, pdfInfo.PagesNumber)
+	textExtractor := text.NewTextExtractor(cleanPath, pdfInfo.PagesNumber)
+	htmlExtractor := html.NewHtmlExtractor(cleanPath, pdfInfo.PagesNumber)
 
 	for i := 0; i < pdfInfo.PagesNumber; i++ {
 		pageNumber := i + 1
@@ -73,7 +83,7 @@ func (r *PDFReader) Text() (string, error) {
 // It returns an error if the html cannot be extracted.
 func (r *PDFReader) Html() (string, error) {
 	r.logger.Debugf("Extracting html from PDF file")
-	return r.textExtractor.Extract()
+	return r.htmlExtractor.Extract()
 }
 
 // PagesNumber returns the number of pages in the PDF file
